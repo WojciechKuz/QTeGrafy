@@ -1,12 +1,6 @@
 # -*- coding: utf-8 -*-
 
-################################################################################
-## Form generated from reading UI file 'form.ui'
-##
-## Created by: Qt User Interface Compiler version 6.6.0
-##
-## WARNING! All changes made in this file will be lost when recompiling UI file!
-################################################################################
+# Do not run this file, it's library for another python script
 
 from PySide6.QtCore import (QCoreApplication, QDate, QDateTime, QLocale,
     QMetaObject, QObject, QPoint, QRect,
@@ -23,9 +17,11 @@ from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.figure import Figure
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar
 
+additionalButtons = False
+
 class Ui_MainWindow(object):
     # Width and height of window. Window can be scaled, but this values are default.
-    window_w = 800
+    window_w = 1000
     window_h = 600
     window_name = u"QTy graf 🐍" # u for unicode string
 
@@ -50,6 +46,7 @@ class Ui_MainWindow(object):
         MainWindow.setStatusBar(self.statusbar)
 
         self.__populateHLayout()
+        self.__populateGraphLayout()
         self.__populateVLayout()
 
         self.retranslateUi(MainWindow) # who cares ???
@@ -64,14 +61,29 @@ class Ui_MainWindow(object):
         #self.horizontalLayout.setContentsMargins(0, 0, 0, 0)
 
         # add v layout to h layout
-        self.verticalLayout = QVBoxLayout(self.centralwidget)
+        self.verticalLayout = QVBoxLayout()
         self.verticalLayout.setObjectName(u"verticalLayout")
-        self.horizontalLayout.addLayout(self.verticalLayout)
+        self.horizontalLayout.addLayout(self.verticalLayout, stretch=2)
 
-        # add graph to h layout
+        # add graph layout to h layout
+        self.graphLayout = QVBoxLayout()
+        self.graphLayout.setObjectName(u"graphLayout")
+        self.horizontalLayout.addLayout(self.graphLayout, stretch=6)
+        pass
+
+    def __populateGraphLayout(self):
+        
+        # graph
         self.graph = FigureCanvas(Figure(figsize=(5, 3))) # graph
         self.graph.setObjectName(u"graph")
-        self.horizontalLayout.addWidget(self.graph)
+        
+        # graph nav menu
+        self.graph_nav_menu = NavigationToolbar(self.graph, self.centralwidget)
+        self.graph_nav_menu.setObjectName(u"graph_nav_menu")
+
+        self.graphLayout.addWidget(self.graph_nav_menu)
+        self.graphLayout.addWidget(self.graph)
+
         pass
 
     def fileButtonClicked(self, receiverFunction):
@@ -87,7 +99,7 @@ class Ui_MainWindow(object):
         pass
 
     def displayFilePath(self, filepath):
-        self.filelabel.setText = filepath
+        self.filelabel.setText = u"Plik:\n\t" + filepath + u"\n"
         pass
     
     def neighbourSpinChanged(self, receiverFunction):
@@ -104,6 +116,8 @@ class Ui_MainWindow(object):
         pass
 
     def __populateVLayout(self):
+        labelPolicy = QSizePolicy()
+        labelPolicy.verticalPolicy = QSizePolicy.Policy.Minimum
 
         # file button
         self.fileButton = QPushButton(self.centralwidget)
@@ -114,21 +128,29 @@ class Ui_MainWindow(object):
         # file label
         self.filelabel = QLabel(self.centralwidget)
         self.filelabel.setObjectName(u"filelabel")
+        self.filelabel.setText(u"📃Plik:\n\tNie wybrano pliku.\n")
+        self.filelabel.setSizePolicy(labelPolicy)
         self.verticalLayout.addWidget(self.filelabel)
 
         # neighbours label
         self.neighboursText = QLabel(self.centralwidget)
         self.neighboursText.setObjectName(u"neighboursText")
+        self.neighboursText.setText(u"\n🏠🏡K - Ilość sąsiadów:")
+        self.neighboursText.setSizePolicy(labelPolicy)
         self.verticalLayout.addWidget(self.neighboursText)
 
         # neighbour spinner
         self.neighbourSpin = QSpinBox(self.centralwidget)
         self.neighbourSpin.setObjectName(u"neighbourSpin")
+        self.neighbourSpin.setMinimum(1)
+        self.neighbourSpin.setMaximum(20)
         self.verticalLayout.addWidget(self.neighbourSpin)
 
         # metric label
         self.metricText = QLabel(self.centralwidget)
         self.metricText.setObjectName(u"metricText")
+        self.metricText.setText(u"\n📏📐Metryka:")
+        self.metricText.setSizePolicy(labelPolicy)
         self.verticalLayout.addWidget(self.metricText)
 
         # metric dropdown
@@ -141,6 +163,8 @@ class Ui_MainWindow(object):
         # vote label
         self.voteText = QLabel(self.centralwidget)
         self.voteText.setObjectName(u"voteText")
+        self.voteText.setText(u"\n🗳📝Rodzaj głosowania:")
+        self.voteText.setSizePolicy(labelPolicy)
         self.verticalLayout.addWidget(self.voteText)
 
         # vote dropdown
@@ -150,26 +174,35 @@ class Ui_MainWindow(object):
         self.voteDrop.insertItems(0, self.votes)
         self.verticalLayout.addWidget(self.voteDrop)
 
-        # buttons h layout
-        self.buttonLayout = QHBoxLayout()
-        self.buttonLayout.setObjectName(u"buttonLayout")
+        if additionalButtons:
+            self.spaceLabel = QLabel(self.centralwidget)
+            self.spaceLabel.setObjectName(u"spacingText")
+            self.spaceLabel.setText(u"\n")
+            self.spaceLabel.setSizePolicy(labelPolicy)
+            self.verticalLayout.addWidget(self.spaceLabel)
 
-        # animate button (in button layout)
-        self.animateButton = QPushButton(self.centralwidget)
-        self.animateButton.setObjectName(u"animateButton")
-        self.buttonLayout.addWidget(self.animateButton)
+            # buttons h layout
+            self.buttonLayout = QHBoxLayout()
+            self.buttonLayout.setObjectName(u"buttonLayout")
 
-        # reset button (in button layout)
-        self.resetButton = QPushButton(self.centralwidget)
-        self.resetButton.setObjectName(u"resetButton")
-        self.buttonLayout.addWidget(self.resetButton)
+            # animate button (in button layout)
+            self.animateButton = QPushButton(self.centralwidget)
+            self.animateButton.setObjectName(u"animateButton")
+            self.animateButton.setText(u"animacja")
+            self.buttonLayout.addWidget(self.animateButton)
 
-        self.verticalLayout.addLayout(self.buttonLayout)
+            # reset button (in button layout)
+            self.resetButton = QPushButton(self.centralwidget)
+            self.resetButton.setObjectName(u"resetButton")
+            self.resetButton.setText(u"reset")
+            self.buttonLayout.addWidget(self.resetButton)
 
-        # graph nav menu
-        self.graph_nav_menu = NavigationToolbar(self.graph, self.centralwidget)
-        self.graph_nav_menu.setObjectName(u"graph_nav_menu")
-        self.verticalLayout.addWidget(self.graph_nav_menu)
+            self.verticalLayout.addLayout(self.buttonLayout)
+
+        # widget for spacing
+        self.spaceWidget = QWidget(self.centralwidget)
+        self.spaceWidget.setObjectName(u"spaceWidget")
+        self.verticalLayout.addWidget(self.spaceWidget)
 
         pass
 
