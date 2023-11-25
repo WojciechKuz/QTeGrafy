@@ -30,41 +30,26 @@ from ui_form import Ui_MainWindow
 class MainWindow(QMainWindow):
     def __init__(self, parent=None):
         super().__init__(parent)
-        self.ui = Ui_MainWindow()   # ?
-        self.ui.setupUi(self)       # ?
+        self.ui = Ui_MainWindow()
+        self.ui.setupUi(self)
+
         # the rest of init and update_canvas is from Example:
         # https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_qt_sgskip.html#sphx-glr-gallery-user-interfaces-embedding-in-qt-sgskip-py
 
-        self._main = QtWidgets.QWidget()
-        self.setCentralWidget(self._main)          # set main widget
-
-        layout = QtWidgets.QVBoxLayout(self._main) # create layout
-
-        # create canvas, add it's toolbar as separate widget, and add grap canas as widget
-        static_canvas = FigureCanvas(Figure(figsize=(5, 3))) # static canvas (won't change)
-        layout.addWidget(NavigationToolbar(static_canvas, self))
-        layout.addWidget(static_canvas)
-
-        # create canvas 2
-        dynamic_canvas = FigureCanvas(Figure(figsize=(5, 3)))
-        layout.addWidget(dynamic_canvas)
-        layout.addWidget(NavigationToolbar(dynamic_canvas, self))
-
-        # add values to static_canvas
-        self._static_ax = static_canvas.figure.subplots()
-        t = np.linspace(0, 10, 501)
-        self._static_ax.plot(t, np.tan(t), ".")
-
         # add values to dynamic_canvas
-        self._dynamic_ax = dynamic_canvas.figure.subplots()
-        t = np.linspace(0, 10, 101)
-        # Set up a Line2D.
-        self._line, = self._dynamic_ax.plot(t, np.sin(t + time.time()))
-        self._timer = dynamic_canvas.new_timer(50)
-        self._timer.add_callback(self._update_canvas)
-        self._timer.start()
+        dynamic_canvas = self.ui.graph # reference to graph canvas, can be edited
+        def graph_example(dynamic_canvas):
+            self._dynamic_ax = dynamic_canvas.figure.subplots()
+            t = np.linspace(0, 10, 101)
+            # Set up a Line2D.
+            self._line, = self._dynamic_ax.plot(t, np.sin(t + time.time()))
+            self._timer = dynamic_canvas.new_timer(50)
+            self._timer.add_callback(self._update_canvas_ex)
+            self._timer.start()
+            pass
+        graph_example(dynamic_canvas)
 
-    def _update_canvas(self):
+    def _update_canvas_ex(self):
         t = np.linspace(0, 10, 101)
         # Shift the sinusoid as a function of time.
         self._line.set_data(t, np.sin(t + time.time()))
