@@ -19,10 +19,14 @@ from PySide6.QtWidgets import (QApplication, QMainWindow, QMenuBar, QSizePolicy,
     QStatusBar, QWidget)
 
 class Ui_MainWindow(object):
+    # Width and height of window. Window can be scaled, but this values are default.
+    window_w = 800
+    window_h = 600
+    window_name = u"QTy graf 🐍" # u for unicode string
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(self.window_w, self.window_h)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         MainWindow.setCentralWidget(self.centralwidget)
@@ -39,6 +43,6 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", self.window_name, None))
     # retranslateUi
 
