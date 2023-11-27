@@ -71,7 +71,7 @@ class MainWindow(QMainWindow):
         pass
 
 
-if __name__ == "__main__":
+if __name__ == "__main__" or __name__ == "mainwindow": # added or... to allow zadanie1.py execute this file
     app = QApplication(sys.argv)
     widget = MainWindow()
     widget.show()
