@@ -10,11 +10,13 @@ from matplotlib.backends.backend_qtagg import FigureCanvas
 from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as NavigationToolbar # FIXME czy profesor ma te wszystkie pakiety?
 from matplotlib.backends.qt_compat import QtWidgets
 from matplotlib.figure import Figure
+#import matplotlib.pyplot as plot
 
 from ui_form import Ui_MainWindow
 
 # my imports:
 from fileloader import readFile, selectFile
+import knn
 
 # Okej, moje UI musi mieć:
 # ✔- wybór pliku,
@@ -41,6 +43,7 @@ class MainWindow(QMainWindow):
         self.ui.fileButtonClicked(self.getFile)
 
         # TODO calculations
+        knn.graph = self.ui.graph
 
         # add values to dynamic_canvas
         dynamic_canvas = self.ui.graph # reference to graph canvas, can be edited
@@ -53,7 +56,13 @@ class MainWindow(QMainWindow):
             self._timer.add_callback(self._update_canvas_ex)
             self._timer.start()
             pass
-        graph_example(dynamic_canvas)
+        #graph_example(dynamic_canvas)
+
+        #plot.figure(num = dynamic_canvas.figure) # no, cuz this figure is not managed by pyplot
+
+        # TODO initialize GraphManager
+
+        # OK, so create graphs using ax.plot()
 
     def _update_canvas_ex(self):
         t = np.linspace(0, 10, 101)
@@ -61,7 +70,7 @@ class MainWindow(QMainWindow):
         self._line.set_data(t, np.sin(t + time.time()))
         self._line.figure.canvas.draw()
 
-    # names run out, but this opens file explorer to select files, then prints file name in window and reads file
+    # opens file explorer to select files, then prints file name in window and reads file to filepoints
     def getFile(self): # self or self.ui
         filename = selectFile(self)
         self.ui.displayFilePath(filename)
