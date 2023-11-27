@@ -13,13 +13,17 @@ from matplotlib.figure import Figure
 
 from ui_form import Ui_MainWindow
 
+# my imports:
+from fileloader import readFile, selectFile
+
 # Okej, moje UI musi mieć:
-# - wybór pliku CSV,
-# - graf, menu obsługi grafu (zablokuj edycję!)
-# - wybór k [1-20] (liczba sąsiadów)
-# - rodzaj metryki - euklidesowa / miejska
-# - rodzaj głosowania - proste / ważone odwrotnością kwadratu odległości
-# - ??? lista wyróżnionych sąsiadów i odległości od punktu użytkownika ???
+# ✔- wybór pliku,
+# ✔- graf, menu obsługi grafu
+# - (zablokuj edycję grafu!)
+# ✔- wybór k [1-20] (liczba sąsiadów)
+# ✔- rodzaj metryki - euklidesowa / miejska
+# ✔- rodzaj głosowania - proste / ważone odwrotnością kwadratu odległości
+# X- ??? lista wyróżnionych sąsiadów i odległości od punktu użytkownika ???
 # Na grafie:
 # - po wczytaniu cały graf powinien być dobrze widoczny, przeskalowany i wycentrowany
 # - kolorowe punkty zależnie od kategorii (6 kategorii [0-5])
@@ -28,13 +32,15 @@ from ui_form import Ui_MainWindow
 # - obok wyróżnionych punktów podać odległość
 
 class MainWindow(QMainWindow):
+    filepoints = []
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
-        # the rest of init and update_canvas is from Example:
-        # https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_qt_sgskip.html#sphx-glr-gallery-user-interfaces-embedding-in-qt-sgskip-py
+        self.ui.fileButtonClicked(self.getFile)
+
+        # TODO calculations
 
         # add values to dynamic_canvas
         dynamic_canvas = self.ui.graph # reference to graph canvas, can be edited
@@ -55,9 +61,22 @@ class MainWindow(QMainWindow):
         self._line.set_data(t, np.sin(t + time.time()))
         self._line.figure.canvas.draw()
 
+    # names run out, but this opens file explorer to select files, then prints file name in window and reads file
+    def getFile(self): # self or self.ui
+        filename = selectFile(self)
+        self.ui.displayFilePath(filename)
+        self.filepoints = readFile(filename)
+        print("filepoints:")
+        print(self.filepoints)
+        pass
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
     widget = MainWindow()
     widget.show()
     sys.exit(app.exec())
+
+
+# UI based on example:
+# https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_qt_sgskip.html#sphx-glr-gallery-user-interfaces-embedding-in-qt-sgskip-py

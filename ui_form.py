@@ -99,7 +99,7 @@ class Ui_MainWindow(object):
         pass
 
     def displayFilePath(self, filepath):
-        self.filelabel.setText = u"Plik:\n\t" + filepath + u"\n"
+        self.filelabel.setText(u"Plik:\n  " + filepath + u"\n")
         pass
     
     def neighbourSpinChanged(self, receiverFunction):
@@ -122,7 +122,7 @@ class Ui_MainWindow(object):
         # file button
         self.fileButton = QPushButton(self.centralwidget)
         self.fileButton.setObjectName(u"fileButton")
-        self.fileButton.setText(u"Wybierz plik (csv)")
+        self.fileButton.setText(u"Wybierz plik")
         self.verticalLayout.addWidget(self.fileButton)
 
         # file label
@@ -203,6 +203,12 @@ class Ui_MainWindow(object):
         self.spaceWidget = QWidget(self.centralwidget)
         self.spaceWidget.setObjectName(u"spaceWidget")
         self.verticalLayout.addWidget(self.spaceWidget)
+
+        self.resizeText = QLabel(self.centralwidget)
+        self.resizeText.setObjectName(u"resizeText")
+        self.resizeText.setText(u"\nOkno można przeskalowywać")
+        self.resizeText.setSizePolicy(labelPolicy)
+        self.verticalLayout.addWidget(self.resizeText)
 
         pass
 

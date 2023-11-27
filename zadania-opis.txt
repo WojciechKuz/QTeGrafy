@@ -37,6 +37,11 @@
 #     - Program można napisać w dowolnym języku programowania. Nie wolno jednak korzystać z pakietów i bibliotek zawierających gotowe
 # 		implementacje algorytmu k-najbliższych sąsiadów.
 
+? - "Normalizacja danych". Chodzi o wstępną obróbkę, np. odrzucenie dziwnych odczytów, czy dopasowanie skali wykresu do danych?
+		Wstępna obróbka, dopasowanie skali też, ale to kolejny punkt.
+
+? - Czy mogę skorzystać z biblioteki do wczytania pliku csv? Obliczenia potem robię sam.
+
 
 
 # 2 ----
