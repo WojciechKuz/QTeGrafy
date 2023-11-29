@@ -17,9 +17,13 @@ class UIManager:
         
 		# receiver functions should be provided
         self.ui.fileButtonClicked(self.getFile)
-        self.ui.neighbourSpinChanged()
-        self.ui.metricChosen()
-        self.ui.votingChosen()
+        self.ui.neighbourSpinChanged(self.getNofNeighbours)
+        self.ui.metricChosen(self.newMetricValue)
+        self.ui.votingChosen(self.newVoteValue)
+        pass
+
+    # TODO start KNN
+    def __startKNN(self):
         pass
 
 	
@@ -36,6 +40,8 @@ class UIManager:
         self.graphM.displayUsrPoint(6.3, 4.0)
         #
         pass
+    
+	# TODO add graph onclick -> display user point
 
 	# TODO Jeśli punkt użytkownika został zaznaczony, to poniższe metody uruchamiają algorytm knn
 

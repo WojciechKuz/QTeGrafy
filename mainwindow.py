@@ -25,6 +25,7 @@ import uimanager as uim
 # - gdzie użytkownik kliknie to kwadrat, reszta kółka
 # - gdy dany punkt jest sąsiadem, należy go wyróżnić np. czarny border
 # - obok wyróżnionych punktów podać odległość
+# - obliczanie knn
 
 class MainWindow(QMainWindow):
 
