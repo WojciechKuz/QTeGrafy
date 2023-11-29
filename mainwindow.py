@@ -14,7 +14,7 @@ from matplotlib.figure import Figure
 from ui_form import Ui_MainWindow
 
 # my imports:
-from fileloader import readFile, selectFile
+from fileloader import readFile, selectFile, normalize
 import knn
 import graphmanager as gr
 
@@ -42,6 +42,11 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.ui.fileButtonClicked(self.getFile)
+        #self.ui.animateButtonClicked
+        #self.ui.resetButtonClicked
+        self.ui.neighbourSpinChanged()
+        self.ui.metricChosen()
+        self.ui.votingChosen()
 
         dynamic_canvas = self.ui.graph # reference to graph canvas, can be edited
         self.graphM = gr.GraphManager(dynamic_canvas) # initialize GraphManager
@@ -72,9 +77,13 @@ class MainWindow(QMainWindow):
     def getFile(self): # self or self.ui
         filename = selectFile(self)
         self.ui.displayFilePath(filename)
-        self.filepoints = readFile(filename)
+        self.filepoints = normalize(readFile(filename))
+        print(f"nof rows: {len(self.filepoints)}")
         self.graphM.loadPoints(self.filepoints)
         self.graphM.displayPoints()
+
+        # FIXME test area:
+        #
         pass
 
 

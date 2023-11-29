@@ -99,12 +99,13 @@ class Ui_MainWindow(object):
         pass
 
     def displayFilePath(self, filepath):
-        self.filelabel.setText(u"Plik:\n  " + filepath + u"\n")
+        self.filelabel.setText(u"📃Plik:\n  " + filepath + u"\n")
         pass
     
+    # the element that allows to choose quantity is called spinner, thus name
     def neighbourSpinChanged(self, receiverFunction):
         self.neighbourSpin.valueChanged.connect(receiverFunction)
-        self.neighbourSpin.valueChanged.connect(catchNeighbourSpinChangedExample)
+        #self.neighbourSpin.valueChanged.connect(catchNeighbourSpinChangedExample)
         pass
 
     def metricChosen(self, receiverFunction):
