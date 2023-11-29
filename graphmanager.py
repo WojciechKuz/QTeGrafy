@@ -19,7 +19,7 @@ class GraphManager:
 		fig: Figure = figcanv.figure
 		self.ax = fig.subplots()
 
-		# TODO create graphs using ax.plot()
+		# create graphs using ax.plot() or ax.scatter()
 		pass
 
 	__points: list
@@ -28,11 +28,11 @@ class GraphManager:
 		self.__points = points
 
 	def displayPoints(self):
-		self.xaxle = [] # TODO make it class member and editable, so paint porders would only change points that need it, and not create all again
+		self.xaxle = []
 		self.yaxle = []
 		self.pointcool = [] # colours
 		self.bordercool = [] # border colour
-		for x in self.__points: # points is list of tuples(float, float, int) so x is tuple(float, float, int) 
+		for x in self.__points: # 'points' is list of tuples(float, float, int) so x is tuple(float, float, int) 
 			self.xaxle.append(x[0])
 			self.yaxle.append(x[1])
 			self.pointcool.append(colours.get(x[2], "grey")) # in case, grey colour marks errors
@@ -40,9 +40,10 @@ class GraphManager:
 		self.ax.scatter(np.array(self.xaxle), np.array(self.yaxle), c=self.pointcool, edgecolors=self.bordercool)
 		pass
 
-	def displayUsrPoint(self):
+
+	def displayUsrPoint(self, x: float, y: float):
 		self.__refreshView()
-		self.ax.plot(np.array([6.3]), np.array([4.0]), marker="s")
+		self.ax.plot(np.array([x]), np.array([y]), marker="s")
 		pass
 
 	# mark points under passed indexes from filepoints as neighbours with black border

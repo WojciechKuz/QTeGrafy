@@ -35,10 +35,12 @@ def normalize(input: list):
 # sets are unordered (no indexes), unchangeable and without duplicates
 # tuples are ordered, unchangeable, and allow duplicate values. Has indexes.
 
-# print(normalize([(5, "sir"),(6, "ser"),(3, "sir"),(5, "sir"),(7, "stirr")]))
-# lis = []
-# lis.append((5, "sir"))
-# lis.append((7, "stirr"))
-# print(lis)
+if __name__ == "__main__":
+	print("TESTS:")
+	print(normalize([(5, "sir"),(6, "ser"),(3, "sir"),(5, "sir"),(7, "stirr")]))
+	lis = []
+	lis.append((5, "sir"))
+	lis.append((7, "stirr"))
+	print(lis)
 
 # list of tuples can be converted to set, but not list of lists

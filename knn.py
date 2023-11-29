@@ -4,7 +4,6 @@ from matplotlib.figure import Figure
 metricType=["euclid","city"]
 voteType=["simple", "inverseSqareDist"]
 
-graph: FigureCanvas
 
 def knn(points: list, nofNeighb: int, metric, voting):
 	# TODO calculate stuff

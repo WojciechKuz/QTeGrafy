@@ -19,6 +19,9 @@ from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as Navigation
 
 additionalButtons = False
 
+metrics = ["euklidesowa", "miejska"]
+votes = [u"proste", u"ważone odwrotn. kwadratu odległ."]
+
 class Ui_MainWindow(object):
     # Width and height of window. Window can be scaled, but this values are default.
     window_w = 1000
@@ -157,8 +160,9 @@ class Ui_MainWindow(object):
         # metric dropdown
         self.metricDrop = QComboBox(self.centralwidget)
         self.metricDrop.setObjectName(u"metricDrop")
-        self.metrics = ["euklidesowa", "miejska"]
-        self.metricDrop.insertItems(0, self.metrics)
+        # metrics = ["euklidesowa", "miejska"]
+        # metrics defined on top of file
+        self.metricDrop.insertItems(0, metrics)
         self.verticalLayout.addWidget(self.metricDrop)
 
         # vote label
@@ -171,8 +175,9 @@ class Ui_MainWindow(object):
         # vote dropdown
         self.voteDrop = QComboBox(self.centralwidget)
         self.voteDrop.setObjectName(u"voteDrop")
-        self.votes = [u"proste", u"ważone odwrotn. kwadratu odległ."]
-        self.voteDrop.insertItems(0, self.votes)
+        # votes = [u"proste", u"ważone odwrotn. kwadratu odległ."]
+        # votes defined on top of file
+        self.voteDrop.insertItems(0, votes)
         self.verticalLayout.addWidget(self.voteDrop)
 
         if additionalButtons:
