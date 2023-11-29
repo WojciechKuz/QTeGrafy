@@ -4,6 +4,14 @@ from matplotlib.axes import Axes
 from matplotlib.backends.backend_qtagg import FigureCanvas # ???
 import numpy as np
 
+colours = {
+	0: "blue",
+	1: "cyan",
+	2: "green",
+	3: "orange",
+	4: "red",
+	5: "magenta"
+}
 
 class GraphManager:
 	ax: Axes
@@ -22,11 +30,14 @@ class GraphManager:
 	def displayPoints(self):
 		xaxle = []
 		yaxle = []
-		for x in self.__points:
-			xaxle.append(self.__points[x][0])
-			yaxle.append(self.__points[x][1])
-		self.ax.plot(np.array(xaxle), np.array(yaxle))
+		pointcool = []
+		for x in self.__points: # points is list of lists(float, float, int) so x is list(float, float, int) 
+			xaxle.append(x[0])
+			yaxle.append(x[1])
+			pointcool.append(colours.get(x[2], "grey")) # in case, grey colour marks errors
+		self.ax.scatter(np.array(xaxle), np.array(yaxle), c=pointcool)
 		pass
+
 	def displayUsrPoint(self):
 		pass
 
