@@ -1,7 +1,6 @@
 
 
 from ui_form import Ui_MainWindow, metrics, votes
-from fileloader import readFile, selectFile, normalize
 import knn
 import graphmanager as gr
 
@@ -16,7 +15,7 @@ class UIManager:
         self.graphM = graphM
         
 		# receiver functions should be provided
-        self.ui.fileButtonClicked(self.getFile)
+        #self.ui.fileButtonClicked(self.getFile)
         self.ui.neighbourSpinChanged(self.getNofNeighbours)
         self.ui.metricChosen(self.newMetricValue)
         self.ui.votingChosen(self.newVoteValue)
@@ -27,11 +26,9 @@ class UIManager:
         pass
 
 	
-    # reads file, prints file name in window, reads points and displays it
-    def getFile(self): # self or self.ui
-        filename = selectFile(self)
-        self.ui.displayFilePath(filename)
-        self.filepoints = normalize(readFile(filename))
+    # reads points and displays it
+    def getPoints(self, points): # self or self.ui
+        self.filepoints = points
         print(f"nof rows: {len(self.filepoints)}")
         self.graphM.loadPoints(self.filepoints)
         self.graphM.displayPoints()

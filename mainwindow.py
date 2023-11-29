@@ -6,6 +6,7 @@ from ui_form import Ui_MainWindow, metrics, votes
 # PySide6 (Qt), numpy, matplotlib
 
 # my imports:
+from fileloader import *
 import graphmanager as gr
 import uimanager as uim
 
@@ -37,12 +38,38 @@ class MainWindow(QMainWindow):
         # self.ui.graph is reference to graph canvas
         self.graphM = gr.GraphManager(self.ui.graph) # initialize GraphManager
         self.uiManager = uim.UIManager(self.ui, self.graphM)
+        self.ui.fileButtonClicked(self.getFile)
+    
+    # reads file, prints file name in window, normalizes data, and passes it to UI manager
+    def getFile(self): # self or self.ui
+        filename = selectFile(self)
+        self.ui.displayFilePath(filename)
+        points = normalize(readFile(filename))
+        self.uiManager.getPoints(points)
+        pass
+
+def checklibs():
+    pkgs = ['PySide6', 'matplotlib', 'numpy']
+    ihaveall = True
+    for p in pkgs:
+        try:
+            __import__(p)
+        except(ImportError):
+            print('Nie zainstalowano ', p)
+            ihaveall = False
+    if not ihaveall:
+        print('Nalezy je doinstalowac zeby program dzialal, np. za pomoca pip')
+        return False
+    return True
+
 
 if __name__ == "__main__": # file can be renamed to something nicer and still contain this class
-	app = QApplication(sys.argv)
-	widget = MainWindow()
-	widget.show()
-	sys.exit(app.exec())
+    if not checklibs():
+        sys.exit(1)
+    app = QApplication(sys.argv)
+    widget = MainWindow()
+    widget.show()
+    sys.exit(app.exec())
 
 # UI based on example:
 # https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_qt_sgskip.html#sphx-glr-gallery-user-interfaces-embedding-in-qt-sgskip-py

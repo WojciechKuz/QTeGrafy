@@ -30,20 +30,19 @@ def selectFile(parent) -> str:
 # FLAG
 __adv_normalize = True # usuwanie wierszy, gdy uszkodzone dane
 
-def normalize(input: list) -> list:
+def normalize(myinput: list) -> list:
 	if __adv_normalize:
-		__advanced_normalize(input)
-	output = list(set(input))
-	return 
+		__advanced_normalize(myinput)
+	return list(set(myinput))
 
 # remove row if it's not complete
 def __advanced_normalize(input_output: list):
-	initiallen = len(input)
-	for tup in input:
+	initiallen = len(input_output)
+	for tup in input_output:
 		# Wykonaj jeśli którakolwiek z funkcji zwróci false
 		if not (__checkF(tup[0]) and __checkF(tup[1]) and __checkI(tup[2])):
 			input.remove(tup)
-	diffr = initiallen - len(input)
+	diffr = initiallen - len(input_output)
 	if diffr > 0:
 		print(u"Usunięto", diffr, "wierszy z powodu niekompletnych danych")
 	pass
