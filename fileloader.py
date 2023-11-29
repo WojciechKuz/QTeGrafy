@@ -27,9 +27,38 @@ def selectFile(parent) -> str:
 	print("Uwaga! Pominieto dokonanie wyboru pliku.")
 	return ""
 
-# tylko usuwa duplikaty
-def normalize(input: list):
-	return list(set(input))
+# FLAG
+__adv_normalize = True # usuwanie wierszy, gdy uszkodzone dane
+
+def normalize(input: list) -> list:
+	if __adv_normalize:
+		__advanced_normalize(input)
+	output = list(set(input))
+	return 
+
+# remove row if it's not complete
+def __advanced_normalize(input_output: list):
+	initiallen = len(input)
+	for tup in input:
+		# Wykonaj jeśli którakolwiek z funkcji zwróci false
+		if not (__checkF(tup[0]) and __checkF(tup[1]) and __checkI(tup[2])):
+			input.remove(tup)
+	diffr = initiallen - len(input)
+	if diffr > 0:
+		print(u"Usunięto", diffr, "wierszy z powodu niekompletnych danych")
+	pass
+
+def __checkF(f) -> bool:
+	if type(f) != float:
+		return False
+	return True
+
+def __checkI(i) -> bool:
+	if type(i) != int:
+		return False
+	if i not in range(6): # [0-5]
+		return False
+	return True
 
 # uses sets to normalize
 # sets are unordered (no indexes), unchangeable and without duplicates
