@@ -17,6 +17,7 @@ from ui_form import Ui_MainWindow
 # my imports:
 from fileloader import readFile, selectFile
 import knn
+import graphmanager as gr
 
 # Okej, moje UI musi mieć:
 # ✔- wybór pliku,
@@ -35,6 +36,7 @@ import knn
 
 class MainWindow(QMainWindow):
     filepoints = []
+
     def __init__(self, parent=None):
         super().__init__(parent)
         self.ui = Ui_MainWindow()
@@ -61,6 +63,7 @@ class MainWindow(QMainWindow):
         #plot.figure(num = dynamic_canvas.figure) # no, cuz this figure is not managed by pyplot
 
         # TODO initialize GraphManager
+        self.graphM = gr.GraphManager(dynamic_canvas)
 
         # OK, so create graphs using ax.plot()
 

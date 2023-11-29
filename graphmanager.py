@@ -27,18 +27,18 @@ class GraphManager:
 			yaxle.append(self.__points[x][1])
 		self.ax.plot(np.array(xaxle), np.array(yaxle))
 		pass
-	def displayUsrPoint():
+	def displayUsrPoint(self):
 		pass
 
 	# TODO mark points under passed indexes from filepoints as neighbours with black border
-	def paintBorders(pointIndexes: list):
+	def paintBorders(self, pointIndexes: list):
 		pass
 
 	# TODO mark points under passed indexes from filepoints as neighbours with black border and show distance to usrpoint
 	# pass list of lists with: indexes to points that should have border, distance to usrpoint
-	def paintBordersWithDistance(pointIndexes: list):
+	def paintBordersWithDistance(self, pointIndexes: list):
 		pass
 
 	# TODO remove border from points
-	def removePointBorder():
+	def removePointBorder(self):
 		pass
