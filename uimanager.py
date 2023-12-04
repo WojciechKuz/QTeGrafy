@@ -3,6 +3,7 @@
 from ui_form import Ui_MainWindow, metrics, votes
 import knn
 import graphmanager as gr
+import asyncio
 
 # manage ui signals, trigger actions
 class UIManager:
@@ -34,8 +35,7 @@ class UIManager:
         self.graphM.displayPoints()
 
         # FIXME test area:
-        self.graphM.displayUsrPoint(6.3, 4.0)
-        #
+        self.testUI()
         pass
     
 	# TODO add graph onclick -> display user point
@@ -51,4 +51,9 @@ class UIManager:
 
     def newVoteValue(self, voting: str):
         # TODO proównaj voting z wartościami z votes
+        pass
+
+    def testUI(self): # unfortunately, graph is displayed after completing this method, so sleep call not possible
+        #self.graphM.paintBordersWithDistance([14, 3, 67], [14, 3, 69])
+        #print("paintBordersWithDistance(...)")
         pass
