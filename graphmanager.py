@@ -45,6 +45,15 @@ class GraphManager:
 			self.bordercool.append("none")
 		pass
 
+	def setOnPressCall(self, onPressCall):
+		"""
+		Params
+		------
+		onPressCall: function
+		"""
+		self.onPressCall: function = onPressCall
+		pass
+
 	def displayPoints(self):
 		self.ax.clear()
 		self.ax.scatter(np.array(self.xaxle), np.array(self.yaxle), c=self.pointcool, edgecolors=self.bordercool, marker='o')
@@ -54,12 +63,17 @@ class GraphManager:
 			self.ax.scatter(xarr, yarr, c=colours.get(self.usrpoint[2], "grey"), edgecolors="none", marker="s")
 		self.draw()
 		self.tight()
+		pass
 
 	def on_press(self, event):
 		# print("Event:")
 		# print(f"\tx: {event.x}, y: {event.y}")
 		# print(f"\txdata: {event.xdata}, ydata: {event.ydata}")
 		self.displayUsrPoint(event.xdata, event.ydata)
+		if hasattr(self, "onPressCall"):
+			self.onPressCall()
+		else:
+			print("Error, you have to setOnPressCall() before calling on_press()")
 		pass
 
 	def displayUsrPoint(self, x: float, y: float):
@@ -71,6 +85,13 @@ class GraphManager:
 			self.usrpoint[1] = y
 		self.displayPoints()
 		pass
+	
+	def getusrPointTuple(self) -> tuple:
+		"""
+		Returns
+		-------
+		tuple(float, float)"""
+		return (self.usrpoint[0], self.usrpoint[1])
 
 	# mark points under passed indexes from filepoints as neighbours with black border
 	def paintBorders(self, pointIndexes: list):
