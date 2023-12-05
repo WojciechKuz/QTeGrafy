@@ -19,8 +19,7 @@ from matplotlib.backends.backend_qtagg import NavigationToolbar2QT as Navigation
 
 additionalButtons = False
 
-metrics = ["euklidesowa", "miejska"]
-votes = [u"proste", u"ważone odwrotn. kwadratu odległ."]
+from knn import metrics, votes
 
 class Ui_MainWindow(object):
     # Width and height of window. Window can be scaled, but this values are default.

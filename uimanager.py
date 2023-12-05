@@ -1,9 +1,8 @@
 
 
-from ui_form import Ui_MainWindow, metrics, votes
+from ui_form import Ui_MainWindow
 import knn
 import graphmanager as gr
-import asyncio
 
 # manage ui signals, trigger actions
 class UIManager:
@@ -35,15 +34,20 @@ class UIManager:
         nofNeighbours = ui.neighbourSpin.value()
         metricType = ui.metricDrop.currentText()
         votingSys = ui.voteDrop.currentText()
-        return (nofNeighbours, metricType, votingSys)
+        return {
+            "nofNeighbours" : nofNeighbours,
+            "metricType" : metricType,
+            "votingSys" : votingSys
+            }
 
     def __startKNN(self):
         """Calls KNN function"""
         KNNoutput = knn.knn(self.filepoints, self.__getKNNparams(), self.graphM.getusrPointTuple())
         indxList = KNNoutput[0]
         distList = KNNoutput[1]
+        colour = KNNoutput[2]
         self.graphM.paintBordersWithDistance(indxList, distList)
-        pass
+        return colour # GraphManager needs this to set user point's colour
 
 	
     # reads points and displays it

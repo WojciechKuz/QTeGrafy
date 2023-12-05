@@ -3,7 +3,7 @@ from matplotlib.figure import Figure
 from matplotlib.axes import Axes
 from matplotlib.markers import MarkerStyle
 from matplotlib.backends.backend_qtagg import FigureCanvas # ???
-import numpy as np
+from numpy import array as nparray
 
 colours = {
 	0: "blue",
@@ -56,10 +56,10 @@ class GraphManager:
 
 	def displayPoints(self):
 		self.ax.clear()
-		self.ax.scatter(np.array(self.xaxle), np.array(self.yaxle), c=self.pointcool, edgecolors=self.bordercool, marker='o')
+		self.ax.scatter(nparray(self.xaxle), nparray(self.yaxle), c=self.pointcool, edgecolors=self.bordercool, marker='o')
 		if self.usrpointDefined:
-			xarr = np.array([self.usrpoint[0]])
-			yarr = np.array([self.usrpoint[1]])
+			xarr = nparray([self.usrpoint[0]])
+			yarr = nparray([self.usrpoint[1]])
 			self.ax.scatter(xarr, yarr, c=colours.get(self.usrpoint[2], "grey"), edgecolors="none", marker="s")
 		self.draw()
 		self.tight()
@@ -69,20 +69,22 @@ class GraphManager:
 		# print("Event:")
 		# print(f"\tx: {event.x}, y: {event.y}")
 		# print(f"\txdata: {event.xdata}, ydata: {event.ydata}")
-		self.displayUsrPoint(event.xdata, event.ydata)
+		col: int
 		if hasattr(self, "onPressCall"):
-			self.onPressCall()
+			col = self.onPressCall() # onPressCall is set in UIManager, calls __startKNN()
 		else:
 			print("Error, you have to setOnPressCall() before calling on_press()")
+		self.displayUsrPoint(event.xdata, event.ydata, col)
 		pass
 
-	def displayUsrPoint(self, x: float, y: float):
+	def displayUsrPoint(self, x: float, y: float, col: int):
 		if not self.usrpointDefined:
 			self.usrpointDefined = True
-			self.usrpoint = [x, y, 229, "none", 's']
+			self.usrpoint = [x, y, col, "none", 's']
 		else:
 			self.usrpoint[0] = x
 			self.usrpoint[1] = y
+			self.usrpoint[2] = col
 		self.displayPoints()
 		pass
 	
