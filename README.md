@@ -14,3 +14,5 @@ python zadanie1.py
 ⚠ Uwaga! Może zdarzyć się tak, że okno będzie ładować się kilka sekund (około 2-5). Uruchamia się poprawnie.
 
 Działanie programu testowałem na wersjach pythona: 3.11 3.10
+
+⚠ Program ze względu na użycie PySide6 (Qt dla Pythona) działa tylko na Windowsie.
