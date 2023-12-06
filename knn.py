@@ -23,7 +23,7 @@ def knn(points: list, KNNparams: dict, usrpoint: tuple): #  -> tuple(list(int), 
 	Parameters
 	----------
 	points: list
-		list of points from file
+		list of points from file, where point is tuple of float, float, int
 	KNNparams: tuple(int, str, str)
 		should contain: number of neighbours, metric type, voting system
 	usrpoint: tuple
@@ -43,13 +43,18 @@ def knn(points: list, KNNparams: dict, usrpoint: tuple): #  -> tuple(list(int), 
 		metricAlgo = cityDist
 	#
 
-	distList = [] # list of distances
+	distList = [] # list of tuple(indexes, distances)
 	for p in points:
-		distList.append(metricAlgo(usrpoint, p))
-	distList.sort(reverse=True)
-	#kNearest = [distList[i] for i in range(KNNparams.get("nofNeighbours"))] # get first K elements from distList
+		distList.append((len(distList), metricAlgo(usrpoint, p))) # len = index of new element
 
-	# TODO choose K nearest out of distances (via voting)
+	sortDistList = sorted(distList, reverse=True, key=lambda x: x[1]) # sorts by distances
+
+	votableDist = kUniqueArray(sortDistList, KNNparams.get("nofNeighbours"))
+	# votableDist - points that took part in voting, there's K unique elements in this list
+
+	# TODO voting. If simpe just use mostPopulatedCategory, else create new array with inverse square dist
+	# HMMM... inverse square dist replaces dist entirely before or after kUniqueArray ???
+	# WATCH THIS: https://www.youtube.com/watch?v=ypCvdED_DDM
 
 	# TODO return list of indexes in filepoints, list of distances, colour class
 
@@ -57,6 +62,26 @@ def knn(points: list, KNNparams: dict, usrpoint: tuple): #  -> tuple(list(int), 
 	return ([14, 3, 67], [14, 3, 67], 229)
 
 # Jeśli byłoby więcej wymiarów (więcej kolumn z liczbami) można for-em zrobić
+
+def kUniqueArray(sortDistL: list, K: int) -> list:
+	"""Choose nearest out of sorted distances, there is K unique values."""
+	kUniqArr = [] # points that took part in voting, there's K unique elements in it
+	uniques = 0
+	indx = 0
+	while uniques < K:
+		if sortDistL[indx] not in kUniqArr:
+			uniques += 1
+		kUniqArr.append(sortDistL[indx])
+		indx += 1
+		if indx == len(sortDistL): # in case we reach end of list not finding K unique distances
+			break
+	return kUniqArr
+
+def mostPopulatedCategory(points: list, negativeOnDuplicate: bool = False) -> int: # if there's duplicate, returned value is negative
+	categ = [0,0,0,0,0,0]
+	for point in points:
+		categ[point[2]] += 1
+	return __indexOfMax(categ, negativeOnDuplicate)
 
 def eukliDist(usrpoint: tuple, point: tuple):
 	# point is also tuble, but ignore it's third value [2]
@@ -69,3 +94,19 @@ def cityDist(usrpoint: tuple, point: tuple):
 def __abs(v: float):
 	if v < 0: return -v
 	return v
+
+def __indexOfMax(ls: list, negOnDup: bool = False): # if there's duplicate, returned value is negative
+	maxIndx = 0
+	maxVal = ls[0]
+	dup = False
+	for i in range(1, len(ls)):
+		if negOnDup and maxVal == ls[i]:
+			maxIndx = i
+			dup = True
+		if maxVal < ls[i]:
+			maxVal = ls[i]
+			maxIndx = i
+			dup = False
+	if dup:
+		return -maxIndx
+	return maxIndx
