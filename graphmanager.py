@@ -16,6 +16,19 @@ colours = {
 }
 
 class GraphManager:
+	"""GraphManager:
+	Draws graph after loading and after onClick for KNN.
+	
+	Initializing:
+	- GraphManager()
+	- loadPoints()
+	- setOnPressCall()
+
+	When GraphManager is initialized (all methods above had been executed)
+	then when onClick is detected graph is redrawn.
+	When function/method provided to setOnPressCall()
+	is called, then after calculating KNN, it should call drawGraph().
+	"""
 	ax: Axes
 	usrpoint: list # as x, y, colour, border, marker. list, because I need this to be mutable
 	usrpointDefined = False
@@ -30,7 +43,6 @@ class GraphManager:
 
 		# create graphs using ax.plot() or ax.scatter()
 		pass
-
 
 	# 'points' should be list of tuples(float, float, int) filepoints
 	def loadPoints(self, points):
@@ -69,25 +81,12 @@ class GraphManager:
 		# print("Event:")
 		# print(f"\tx: {event.x}, y: {event.y}")
 		# print(f"\txdata: {event.xdata}, ydata: {event.ydata}")
-		col: int
 		if hasattr(self, "onPressCall"):
-			col = self.onPressCall() # onPressCall is set in UIManager, calls __startKNN()
+			self.onPressCall((event.xdata, event.ydata)) # onPressCall is set in UIManager, calls __startKNN()
 		else:
 			print("Error, you have to setOnPressCall() before calling on_press()")
-		self.displayUsrPoint(event.xdata, event.ydata, col)
 		pass
 
-	def displayUsrPoint(self, x: float, y: float, col: int):
-		if not self.usrpointDefined:
-			self.usrpointDefined = True
-			self.usrpoint = [x, y, col, "none", 's']
-		else:
-			self.usrpoint[0] = x
-			self.usrpoint[1] = y
-			self.usrpoint[2] = col
-		self.displayPoints()
-		pass
-	
 	def getusrPointTuple(self) -> tuple:
 		"""
 		Returns
@@ -95,33 +94,49 @@ class GraphManager:
 		tuple(float, float)"""
 		return (self.usrpoint[0], self.usrpoint[1])
 
-	# mark points under passed indexes from filepoints as neighbours with black border
-	def paintBorders(self, pointIndexes: list):
-		for i in pointIndexes:
-			self.bordercool[i] = "black"
-		self.displayPoints()
+	def setUsrPointT(self, xy: tuple, col: int):
+		self.setUsrPoint(xy[0], xy[1], col)
 		pass
 
-	# mark points under passed indexes from filepoints as neighbours with black border and show distance to usrpoint
-	# pass list of tuples with: indexes to points that should have border (that are neighbours), distance of them to usrpoint
-	def paintBordersWithDistance(self, pointIndexes: list, pointDistance: list):
-		nofp = len(pointIndexes)
-		if len(pointDistance) != nofp:
-			raise Exception(f"Different number of elements in pointIndexes ({nofp}) and in  pointDistance ({len(pointDistance)})")
-		self.paintBorders(pointIndexes)
+	def setUsrPoint(self, x: float, y: float, col: int):
+		if not self.usrpointDefined:
+			self.usrpointDefined = True
+			self.usrpoint = [x, y, col, "none", 's']
+		else:
+			self.usrpoint[0] = x
+			self.usrpoint[1] = y
+			self.usrpoint[2] = col
+		pass
+	
+
+	# mark points under passed indexes from filepoints as neighbours with black border
+	def setBorders(self, pointIndexes: list):
+		for i in pointIndexes:
+			self.bordercool[i] = "black"
+		pass
+
+	def annotatePoints(self, indexesAndDistances: list):
 		offset = 0.02
-		for i in range(nofp): # can't be for i in pointIndexes, because I operate on two lists
-			indx = pointIndexes[i]
+		for iandd in indexesAndDistances:
+			indx = iandd[0]
 			xy = (self.xaxle[indx], self.yaxle[indx]) # point position
 			xytxt = (self.xaxle[indx] + offset, self.yaxle[indx] + offset) # annotation position 
-			txt = pointDistance[i] # annotation text
+			txt = iandd[1] # annotation text
 			self.bordercool[indx] = "black"
 			self.ax.annotate(txt, xy, xytxt)
 		pass
 
 	# remove border from points
-	def removePointBorder(self):
+	def resetBordercool(self):
 		for i in range(len(self.bordercool)): # I probably just commited Python war-crime
 			self.bordercool[i] = "none"
+		pass
+
+	def drawGraph(self, indxAndDistList: list, usrpoint: tuple, colour: int):
+		"""All-in-one graph drawing function"""
+		self.setUsrPointT(usrpoint, colour)
+		self.setBorders([x[0] for x in indxAndDistList])
 		self.displayPoints()
+		self.annotatePoints(indxAndDistList)
+		self.resetBordercool()
 		pass

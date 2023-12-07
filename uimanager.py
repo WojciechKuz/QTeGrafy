@@ -13,7 +13,7 @@ class UIManager:
     def __init__(self, ui: Ui_MainWindow, graphM: gr.GraphManager):
         self.ui = ui
         self.graphM = graphM
-        graphM.setOnPressCall(self.__startKNN) # when usr sets point, calculate knn
+        graphM.setOnPressCall(self.startKNN) # when usr sets point, calculate knn
         
 		# receiver functions should be provided
         #self.ui.fileButtonClicked(self.getFile)
@@ -40,47 +40,33 @@ class UIManager:
             "votingSys" : votingSys
             }
 
-    def __startKNN(self):
+    def startKNN(self, usrpoint: tuple):
         """Calls KNN function"""
-        KNNoutput = knn.knn(self.filepoints, self.__getKNNparams(), self.graphM.getusrPointTuple())
-        indxList = KNNoutput[0]
-        distList = KNNoutput[1]
-        colour = KNNoutput[2]
-        self.graphM.paintBordersWithDistance(indxList, distList)
-        return colour # GraphManager needs this to set user point's colour
-
+        KNNoutput = knn.knn(self.filepoints, self.__getKNNparams(), usrpoint)
+        self.graphM.drawGraph(KNNoutput[0], usrpoint, KNNoutput[1])
+        pass
 	
     # reads points and displays it
     def getPoints(self, points): # self or self.ui
         self.filepoints = points
-        print(f"nof rows: {len(self.filepoints)}")
+        #print(f"nof rows: {len(self.filepoints)}")
         self.graphM.loadPoints(self.filepoints)
         self.graphM.displayPoints()
-
-        # FIXME test area:
-        self.testUI()
         pass
 
 	# Jeśli punkt użytkownika został zaznaczony, to poniższe metody uruchamiają algorytm knn
 
     def getNofNeighbours(self, k: int):
         if self.graphM.usrpointDefined:
-            self.__startKNN
+            self.startKNN(self.graphM.getusrPointTuple())
         pass
 
     def newMetricValue(self, metric: str):
-        # proównaj metric z wartościami z metrics
         if self.graphM.usrpointDefined:
-            self.__startKNN
+            self.startKNN(self.graphM.getusrPointTuple())
         pass
 
     def newVoteValue(self, voting: str):
-        # proównaj voting z wartościami z votes
         if self.graphM.usrpointDefined:
-            self.__startKNN
-        pass
-
-    def testUI(self): # unfortunately, graph is displayed after completing this method, so sleep call not possible
-        #self.graphM.paintBordersWithDistance([14, 3, 67], [14, 3, 69])
-        #print("paintBordersWithDistance(...)")
+            self.startKNN(self.graphM.getusrPointTuple())
         pass
