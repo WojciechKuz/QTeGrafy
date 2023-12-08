@@ -121,9 +121,9 @@ class GraphManager:
 			indx = iandd[0]
 			xy = (self.xaxle[indx], self.yaxle[indx]) # point position
 			xytxt = (self.xaxle[indx] + offset, self.yaxle[indx] + offset) # annotation position 
-			txt = iandd[1] # annotation text
+			txt = round(iandd[1], 2) # annotation text
 			self.bordercool[indx] = "black"
-			self.ax.annotate(txt, xy, xytxt)
+			self.ax.annotate(txt, xy, xytxt) # FIXME format text
 		pass
 
 	# remove border from points
@@ -138,5 +138,6 @@ class GraphManager:
 		self.setBorders([x[0] for x in indxAndDistList])
 		self.displayPoints()
 		self.annotatePoints(indxAndDistList)
+		self.draw()
 		self.resetBordercool()
 		pass

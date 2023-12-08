@@ -54,21 +54,23 @@ def checklibs():
         try:
             __import__(p)
         except(ImportError):
-            print('Nie zainstalowano ', p)
+            print('Nie zainstalowano', p)
             ihaveall = False
     if not ihaveall:
         print('Nalezy je doinstalowac zeby program dzialal, np. za pomoca pip')
         return False
     return True
 
-
-if __name__ == "__main__": # file can be renamed to something nicer and still contain this class
+def startProgram():
     if not checklibs():
         sys.exit(1)
     app = QApplication(sys.argv)
     widget = MainWindow()
     widget.show()
     sys.exit(app.exec())
+
+if __name__ == "__main__": # file can be renamed to something nicer and still contain this class
+    startProgram()
 
 # UI based on example:
 # https://matplotlib.org/stable/gallery/user_interfaces/embedding_in_qt_sgskip.html#sphx-glr-gallery-user-interfaces-embedding-in-qt-sgskip-py
